@@ -304,5 +304,3 @@ Epoch: 480/500, loss: 0.857900218080178, correct: 50
 Epoch: 490/500, loss: 0.8280483247549127, correct: 50
 Epoch: 500/500, loss: 0.8014899535859225, correct: 50
 
-# Spiral
-
