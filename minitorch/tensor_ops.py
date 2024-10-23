@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .tensor import Tensor
     from .tensor_data import Shape, Storage, Strides
 
+import numpy as np
 
 class MapProto(Protocol):
     def __call__(self, x: Tensor, out: Optional[Tensor] = ..., /) -> Tensor:
@@ -280,11 +281,11 @@ def tensor_map(
         for i in range(len(out)):
             # figure out where the i'th element of the storage belongs in the output
             # based on the output shape, then get that into the output index
-            to_index(i, out_shape, output_index)
+            to_index(i, out_shape, np.array(output_index, dtype=np.int32))
             # figure out where the bigger index resides in terms of the input's shape
-            broadcast_index(output_index, out_shape, in_shape, input_index)
+            broadcast_index(np.array(output_index, dtype=np.int32), out_shape, in_shape, np.array(input_index, dtype=np.int32))
             # compute and store
-            out[i] = fn(in_storage[index_to_position(input_index, in_strides)])
+            out[i] = fn(in_storage[index_to_position(np.array(input_index, dtype=np.int32), in_strides)])
 
     return _map
 
@@ -339,14 +340,14 @@ def tensor_zip(
         for i in range(len(out)):
             # figure out where the i'th element of the storage belongs in the output
             # based on the output shape, then get that into the output index
-            to_index(i, out_shape, output_index)
+            to_index(i, out_shape, np.array(output_index, dtype=np.int32))
             # figure out where the bigger index resides in terms of the input's shape
-            broadcast_index(output_index, out_shape, a_shape, a_index)
-            broadcast_index(output_index, out_shape, b_shape, b_index)
+            broadcast_index(np.array(output_index, dtype=np.int32), out_shape, a_shape, np.array(a_index, dtype=np.int32))
+            broadcast_index(np.array(output_index, dtype=np.int32), out_shape, b_shape, np.array(b_index, dtype=np.int32))
             # compute and store
             out[i] = fn(
-                a_storage[index_to_position(a_index, a_strides)],
-                b_storage[index_to_position(b_index, b_strides)],
+                a_storage[index_to_position(np.array(a_index, dtype=np.int32), a_strides)],
+                b_storage[index_to_position(np.array(b_index, dtype=np.int32), b_strides)],
             )
 
     return _zip
@@ -389,10 +390,10 @@ def tensor_reduce(
                 temp_inp_idx = output_index[:]
                 temp_inp_idx[reduce_dim] = inc
                 if not curr:
-                    curr = a_storage[index_to_position(temp_inp_idx, a_strides)]
+                    curr = a_storage[index_to_position(np.array(temp_inp_idx, dtype=np.int32), a_strides)]
                 else:
                     curr = fn(
-                        curr, a_storage[index_to_position(temp_inp_idx, a_strides)]
+                        curr, a_storage[index_to_position(np.array(temp_inp_idx, dtype=np.int32), a_strides)]
                     )
             out[i] = curr
 
