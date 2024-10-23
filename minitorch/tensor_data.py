@@ -32,7 +32,7 @@ UserShape: TypeAlias = Sequence[int]
 UserStrides: TypeAlias = Sequence[int]
 
 
-def index_to_position(index: Index, strides: Strides) -> int:
+def index_to_position(index: Union[Index, Sequence[int]], strides: Strides) -> int:
     """Converts a multidimensional tensor `index` into a single-dimensional position in
     storage based on strides.
 
@@ -49,7 +49,7 @@ def index_to_position(index: Index, strides: Strides) -> int:
     return sum([i * s for i, s in zip(index, strides)])
 
 
-def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
+def to_index(ordinal: int, shape: Shape, out_index: Union[OutIndex, Sequence[int]]) -> None:
     """Convert an `ordinal` to an index in the `shape`.
     Should ensure that enumerating position 0 ... size of a
     tensor produces every index exactly once. It
@@ -72,7 +72,7 @@ def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
 
 
 def broadcast_index(
-    big_index: Index, big_shape: Shape, shape: Shape, out_index: OutIndex
+    big_index: Union[Index, Sequence[int]], big_shape: Shape, shape: Shape, out_index: Union[OutIndex, Sequence[int]]
 ) -> None:
     """Convert a `big_index` into `big_shape` to a smaller `out_index`
     into `shape` following broadcasting rules. In this case
