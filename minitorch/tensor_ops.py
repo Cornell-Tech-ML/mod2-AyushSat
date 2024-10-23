@@ -383,7 +383,7 @@ def tensor_reduce(
         output_index = [0] * len(out_shape)
 
         for i in range(len(out)):
-            to_index(i, out_shape, output_index)
+            to_index(i, out_shape, np.array(output_index, dtype=np.int32))
             curr = None
             for inc in range(a_shape[reduce_dim]):
                 # deep copy output idx
