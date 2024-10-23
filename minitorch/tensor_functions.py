@@ -108,7 +108,9 @@ class All(Function):
         if dim is not None:
             return a.f.mul_reduce(a, int(dim.item()))
         else:
-            return a.f.mul_reduce(a.contiguous().view(int(operators.prod(a.shape))), 0)
+            return a.f.mul_reduce(
+                a.contiguous().view(int(operators.prod(list(a.shape)))), 0
+            )
 
 
 class Mul(Function):
@@ -198,7 +200,7 @@ class Sum(Function):
             return t1.f.add_reduce(t1, int(reduce_dim.item()))
         else:
             return t1.f.add_reduce(
-                t1.contiguous().view(int(operators.prod(t1.shape))), 0
+                t1.contiguous().view(int(operators.prod(list(t1.shape)))), 0
             )
 
     @staticmethod
@@ -341,7 +343,7 @@ def zeros(shape: UserShape, backend: TensorBackend = SimpleBackend) -> Tensor:
 
     """
     return minitorch.Tensor.make(
-        [0.0] * int(operators.prod(shape)), shape, backend=backend
+        [0.0] * int(operators.prod(list(shape))), shape, backend=backend
     )
 
 
@@ -363,7 +365,7 @@ def rand(
         :class:`Tensor` : new tensor
 
     """
-    vals = [random.random() for _ in range(int(operators.prod(shape)))]
+    vals = [random.random() for _ in range(int(operators.prod(list(shape))))]
     tensor = minitorch.Tensor.make(vals, shape, backend=backend)
     tensor.requires_grad_(requires_grad)
     return tensor

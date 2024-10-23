@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Iterable, Optional, Sequence, Tuple, Union, List
+from typing import Iterable, Optional, Sequence, Tuple, Union
 
 import numba
 import numba.cuda
@@ -21,15 +21,15 @@ class IndexingError(RuntimeError):
     pass
 
 
-Storage: TypeAlias = Union[npt.NDArray[np.float64], List[int]]
-OutIndex: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
-Index: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
-Shape: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
-Strides: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
+Storage: TypeAlias = npt.NDArray[np.float64]
+OutIndex: TypeAlias = npt.NDArray[np.int32]
+Index: TypeAlias = npt.NDArray[np.int32]
+Shape: TypeAlias = npt.NDArray[np.int32]
+Strides: TypeAlias = npt.NDArray[np.int32]
 
-UserIndex: TypeAlias = Union[List[int], List[float], Sequence[int], Sequence[float]]
-UserShape: TypeAlias = Union[List[int], List[float], Sequence[int], Sequence[float]]
-UserStrides: TypeAlias = Union[List[int], List[float], Sequence[int], Sequence[float]]
+UserIndex: TypeAlias = Sequence[int]
+UserShape: TypeAlias = Sequence[int]
+UserStrides: TypeAlias = Sequence[int]
 
 
 def index_to_position(index: Index, strides: Strides) -> int:
@@ -173,7 +173,7 @@ class TensorData:
         self._shape = array(shape)
         self.strides = strides
         self.dims = len(strides)
-        self.size = int(prod(shape))
+        self.size = int(prod(list(shape)))
         self.shape = shape
         assert len(self._storage) == self.size
 

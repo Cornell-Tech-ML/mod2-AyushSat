@@ -203,7 +203,7 @@ class Tensor:
 
         def zero(shape: UserShape) -> Tensor:
             return Tensor.make(
-                [0.0] * int(operators.prod(shape)), shape, backend=self.backend
+                [0.0] * int(operators.prod(list(shape))), shape, backend=self.backend
             )
 
         if shape is None:
@@ -235,7 +235,7 @@ class Tensor:
         assert self.is_leaf(), "Only leaf variables can have derivatives."
         if self.grad is None:
             self.grad = Tensor.make(
-                [0.0] * int(operators.prod(self.shape)),
+                [0.0] * int(operators.prod(list(self.shape))),
                 self.shape,
                 backend=self.backend,
             )
@@ -322,7 +322,7 @@ class Tensor:
     def __rmul__(self, t2: TensorLike) -> Tensor:
         return Mul.apply(self._ensure_tensor(t2), self)
 
-    def all(self, dim: TensorLike = None) -> Tensor:
+    def all(self, dim: Optional[TensorLike] = None) -> Tensor:
         """Computes the all function, or product of the tensor along a given dimension"""
         if dim:
             return All.apply(self, self._ensure_tensor(dim))
@@ -349,7 +349,7 @@ class Tensor:
         """Computes the exponential function, or the result of calling exp on the tensor"""
         return Exp.apply(self)
 
-    def sum(self, dim: TensorLike = None) -> Tensor:
+    def sum(self, dim: Optional[TensorLike] = None) -> Tensor:
         """Computes the sum function, or the result of calling sum on the tensor along a given dimension"""
         if dim is None:
             return Sum.apply(self)
@@ -367,12 +367,14 @@ class Tensor:
         """Computes the permute function, or the result of calling permute on the tensor with the given dimensions"""
         return Permute.apply(self, tensor(dim))
 
-    def mean(self, dim: TensorLike = None) -> Tensor:
+    def mean(self, dim: Optional[TensorLike] = None) -> Tensor:
         """Computes the mean function, or the result of calling mean on the tensor along a given dimension"""
         if not dim:
             return self.sum() / self.size
         else:
-            return self.sum(dim) / self.shape[dim]
+            tdim = self._ensure_tensor(dim)
+
+            return self.sum(dim) / self.shape[int(tdim.item())]
 
     def zero_grad_(self) -> None:
         """Sets the gradient to None"""
