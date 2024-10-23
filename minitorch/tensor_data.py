@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Iterable, Optional, Sequence, Tuple, Union, List
+from typing import Iterable, Optional, Sequence, Tuple, Union
 
 import numba
 import numba.cuda
@@ -21,15 +21,15 @@ class IndexingError(RuntimeError):
     pass
 
 
-Storage: TypeAlias = Union[npt.NDArray[np.float64], List[int]]
-OutIndex: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
-Index: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
-Shape: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
-Strides: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
+Storage: TypeAlias = Union[npt.NDArray[np.float64], Sequence[int]]
+OutIndex: TypeAlias = Union[npt.NDArray[np.int32], Sequence[int]]
+Index: TypeAlias = Union[npt.NDArray[np.int32], Sequence[int]]
+Shape: TypeAlias = Union[npt.NDArray[np.int32], Sequence[int]]
+Strides: TypeAlias = Union[npt.NDArray[np.int32], Sequence[int]]
 
-UserIndex: TypeAlias = Sequence[int]
-UserShape: TypeAlias = Sequence[int]
-UserStrides: TypeAlias = Sequence[int]
+UserIndex: TypeAlias = Union[Sequence[int], Sequence[float]]
+UserShape: TypeAlias = Union[Sequence[int], Sequence[float]]
+UserStrides: TypeAlias = Union[Sequence[int], Sequence[float]]
 
 
 def index_to_position(index: Index, strides: Strides) -> int:
