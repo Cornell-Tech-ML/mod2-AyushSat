@@ -189,7 +189,9 @@ class Exp(Function):
 
 class Sum(Function):
     @staticmethod
-    def forward(ctx: Context, t1: Tensor, reduce_dim: Union[Tensor, None] = None) -> Tensor:
+    def forward(
+        ctx: Context, t1: Tensor, reduce_dim: Union[Tensor, None] = None
+    ) -> Tensor:
         """Forward pass of the sum function, returns the sum of the tensor along a given dimension"""
         ctx.save_for_backward(reduce_dim)
         if reduce_dim:
