@@ -72,7 +72,10 @@ def to_index(ordinal: int, shape: Shape, out_index: Union[OutIndex, List[int]]) 
 
 
 def broadcast_index(
-    big_index: Union[Index, List[int]], big_shape: Shape, shape: Shape, out_index: Union[OutIndex, List[int]]
+    big_index: Union[Index, List[int]],
+    big_shape: Shape,
+    shape: Shape,
+    out_index: Union[OutIndex, List[int]],
 ) -> None:
     """Convert a `big_index` into `big_shape` to a smaller `out_index`
     into `shape` following broadcasting rules. In this case
