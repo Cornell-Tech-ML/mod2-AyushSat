@@ -14,6 +14,7 @@ ignore = [
     "**/assignments",
     "**/project",
     "**/mt_diagrams",
+    "**/tests",
     "**/.*",
     "*chainrule.py*",
 ]
