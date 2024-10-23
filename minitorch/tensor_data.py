@@ -27,9 +27,9 @@ Index: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
 Shape: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
 Strides: TypeAlias = Union[npt.NDArray[np.int32], List[int]]
 
-UserIndex: TypeAlias = Union[List[int], List[float]]
-UserShape: TypeAlias = Union[List[int], List[float]]
-UserStrides: TypeAlias = Union[List[int], List[float]]
+UserIndex: TypeAlias = Union[List[int], List[float], Sequence[int], Sequence[float]]
+UserShape: TypeAlias = Union[List[int], List[float], Sequence[int], Sequence[float]]
+UserStrides: TypeAlias = Union[List[int], List[float], Sequence[int], Sequence[float]]
 
 
 def index_to_position(index: Index, strides: Strides) -> int:
